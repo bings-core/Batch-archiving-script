@@ -8,20 +8,29 @@ screen -S archive_dirs
 ```bash
 mkdir -p /sc/arion/projects/BiNGS/$USER/archiving
 
-# File containing the list of folders to be archived
+# Make a file containing the list of folders to be archived
 folder_list="/sc/arion/projects/BiNGS/$USER/archiving/to_be_archived.txt"
 # Create or empty the list of folders to be archived
 > "$folder_list"
 
-# Output log file for this archiving run
+# Make a file to store filelist paths
+filelists="/sc/arion/projects/BiNGS/$USER/archiving/to_be_archived_filelists.txt"
+# Create or empty the output file
+> "$filelists"
+
+# ⚠️ Create a unique log file name each time to avoid overwriting in your next archiving run. ⚠️
+# Make a file to store output logs for this archiving run
 output_log="/sc/arion/projects/BiNGS/$USER/archiving/archiving_check_status_logs_20250707.txt"
-# Create or empty the list of folders to be archived
+# Create or empty the output log txt
 > "$output_log"
 # Set permission for archiving_bings user
 setfacl -R -m user:archiving_bings:rwx $output_log
 
+ml R/4.1.0
 ```
-Add paths of folders to be archived. My to_be_archived.txt looks like this:
+Add paths of folders to be archived. The other two txt files will remain empty for now.
+
+My to_be_archived.txt looks like this:
 
 /sc/arion/projects/BiNGS/NextSeq_Data/COGIT_NS2k/Bernstein/240823_VH01621_32_AAFMNLMM5
 /sc/arion/projects/BiNGS/NextSeq_Data/COGIT_NS2k/Bernstein/240903_VH01621_34_AAG5233M5
@@ -33,10 +42,8 @@ Add paths of folders to be archived. My to_be_archived.txt looks like this:
 /sc/arion/projects/BiNGS/NextSeq_Data/COGIT_NS2k/Bernstein/250425_VH01621_54_AAGJVLGM5
 /sc/arion/projects/BiNGS/NextSeq_Data/COGIT_NS2k/Bernstein/250618_VH01621_65_AAH22J7M5
 
-### Step 1: Compress
+### Compress
 ```bash
-ml R/4.1.0
-
 # Loop through each folder in the list and compress
 while IFS= read -r folder_name; do
   cd "$folder_name"
@@ -45,7 +52,7 @@ while IFS= read -r folder_name; do
 done < "$folder_list" 
 ```
 
-### Step 2: Set permission for archiving_bings user
+### Set permission for archiving_bings user
 ```bash
 # Loop through each folder in the list
 while IFS= read -r folder_name; do
@@ -59,14 +66,8 @@ while IFS= read -r folder_name; do
 done < "$folder_list"
 ```
 
-### Step 3: Find filelist paths
+### Find filelist paths
 ```bash
-# Make a new txt with filelist paths
-filelists="/sc/arion/projects/BiNGS/$USER/archiving/to_be_archived_filelists.txt"
-
-# Create or empty the output file
-> "$filelists"
-
 # Read each line from the input file
 while IFS= read -r dir_path; do
     # Use a wildcard to search for .filelist files in the directory
@@ -79,4 +80,63 @@ while IFS= read -r dir_path; do
         echo "No .filelist found for $dir_path"
     fi
 done < "$folder_list"
+```
+
+### Switch to archiving_bings user
+```bash
+/opt/collab/bin/cologin archiving_bings
+
+folder_list="/sc/arion/projects/BiNGS/$USER/archiving/to_be_archived.txt"
+filelists="/sc/arion/projects/BiNGS/$USER/archiving/to_be_archived_filelists.txt"
+output_log="/sc/arion/projects/BiNGS/$USER/archiving/archiving_check_status_logs_20250707.txt"
+
+# ⚠️ Change the output log path above based on your unique log file name. ⚠️
+
+ml R/4.1.0
+```
+
+### Delete content
+```bash
+# Loop through each file in the list
+while IFS= read -r tar_filelist_path; do
+  Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R delete_tar_contents "${tar_filelist_path}"
+  echo "Deleted contents of: $tar_filelist_path"
+done < "$filelists"
+```
+
+### Archive
+```bash
+# Loop through each file in the list
+while IFS= read -r tar_filelist_path; do
+  Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R archive "${tar_filelist_path}"
+  echo "Archived contents of: $tar_filelist_path"
+done < "$filelists"
+```
+
+### Check status
+```bash
+# Loop through each file in the list
+while IFS= read -r tar_filelist_path; do
+  # Save the output of the Rscript command to the log file
+  echo "Processing: $tar_filelist_path" >> "$output_log"
+  Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R status "${tar_filelist_path}" >> "$output_log" 2>&1
+  echo "Completed: $tar_filelist_path" >> "$output_log"
+done < "$filelists"
+```
+
+#### ‼️ Check your $output_log file to make sure everything is successfully archived before deleting local tars. ‼️
+#### ‼️ If anything has failed to be archived, remove their .filelist path from $filelists and then continue. ‼️
+
+### Delete local copy
+```bash
+while IFS= read -r tar_filelist_path; do
+  Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R delete_local_tar  "${tar_filelist_path}"
+done < "$filelists"
+```
+
+### Exit
+```bash
+exit
+exit
+screen -X -S archive_dirs quit
 ```
