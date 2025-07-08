@@ -86,13 +86,12 @@ done < "$folder_list"
 ```bash
 /opt/collab/bin/cologin archiving_bings
 
+ml R/4.1.0
+
 folder_list="/sc/arion/projects/BiNGS/$USER/archiving/to_be_archived.txt"
 filelists="/sc/arion/projects/BiNGS/$USER/archiving/to_be_archived_filelists.txt"
+# ⚠️ Change the output log path below based on your unique log file name. ⚠️
 output_log="/sc/arion/projects/BiNGS/$USER/archiving/archiving_check_status_logs_20250707.txt"
-
-# ⚠️ Change the output log path above based on your unique log file name. ⚠️
-
-ml R/4.1.0
 ```
 
 ### Delete content
