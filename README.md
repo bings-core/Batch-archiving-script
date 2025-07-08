@@ -143,11 +143,7 @@ screen -X -S archive_dirs quit
 
 ### Final Reminder
 
-Don’t forget to log the newly archived directory in the <a href="https://mtsinai-my.sharepoint.com/:x:/g/personal/deniz_demircioglu_mssm_edu/EQGNb5S7pbZLsOl2YNnztHQB_UZBapieLhwLwjtqfohhtw?e=6Tpa3f" target="_blank" rel="noopener noreferrer">
-BiNGS_Archiving_Logs.xlsx
-</a>.
-
-[BiNGS_Archiving_Logs.xlsx](https://mtsinai-my.sharepoint.com/:x:/g/personal/deniz_demircioglu_mssm_edu/EQGNb5S7pbZLsOl2YNnztHQB_UZBapieLhwLwjtqfohhtw?e=6Tpa3f)
+Don’t forget to log the newly archived directory in the [BiNGS_Archiving_Logs.xlsx](https://mtsinai-my.sharepoint.com/:x:/g/personal/deniz_demircioglu_mssm_edu/EQGNb5S7pbZLsOl2YNnztHQB_UZBapieLhwLwjtqfohhtw?e=6Tpa3f).
 
  
 
