@@ -1,6 +1,10 @@
 # Batch-archiving-script
 Scripts to run archiving steps on multiple directories at once
 
+You can copy over the scripts below and run piece-by-piece:
+
+/sc/arion/projects/BiNGS/bings_analysis/projects/2025/bings_pipelines/bings_pipeline_batch_archiving/batch_archiving_script.sh
+
 ## 🖥️ Setup
 ```bash
 screen -S archive_dirs
