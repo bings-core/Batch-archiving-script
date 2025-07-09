@@ -95,7 +95,7 @@ ml R/4.1.0
 # ⚠️ Change ulukag01 in the paths below based on your minerva username. ⚠️
 folder_list="/sc/arion/projects/BiNGS/ulukag01/archiving/to_be_archived.txt"
 filelists="/sc/arion/projects/BiNGS/ulukag01/archiving/to_be_archived_filelists.txt"
-# ⚠️ Change the output log path below based on your unique log file name. ⚠️
+# ⚠️ Change the output log path below based on your minerva username and unique log file name. ⚠️
 output_log="/sc/arion/projects/BiNGS/$USER/archiving/archiving_check_status_logs_20250707.txt"
 ```
 
