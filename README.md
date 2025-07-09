@@ -140,9 +140,8 @@ done < "$filelists"
 
 ### Exit the environment
 ```bash
-exit
-exit
-screen -X -S archive_dirs quit
+exit # log out of archiving_bings user
+exit # quit screen session
 ```
 
 ### Final Reminder
