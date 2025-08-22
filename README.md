@@ -150,8 +150,7 @@ Don’t forget to log the newly archived directories in the [BiNGS_Archiving_Log
 
  
 ### Retrieving archived dirs
-#### Make a file containing the list of folders to be archived
-#### Create or empty the list of folders to be archived
+#### Create or empty a file containing the list of folders to be retrieved
 ```bash
 retrieve_list="/sc/arion/projects/BiNGS/$USER/archiving/to_be_retrieved.txt"
 > "$retrieve_list"
