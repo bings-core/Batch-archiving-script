@@ -178,7 +178,7 @@ retrieve_list="/sc/arion/projects/BiNGS/ulukag01/archiving/to_be_retrieved.txt"
 #### Retrieve if all of them are archived before 8/1/2025
 ```bash
 # Loop through each file in the list
-while IFS= read -r retrieve_filelist_path; do
+while IFS= read -r tar_filelist_path; do
   Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R retrieve "${tar_filelist_path}" --legacy
   echo "Retrieved contents of: $tar_filelist_path"
 done < "$retrieve_list"
@@ -187,7 +187,7 @@ done < "$retrieve_list"
 #### Retrieve if all of them are archived after 8/1/2025
 ```bash
 # Loop through each file in the list
-while IFS= read -r retrieve_filelist_path; do
+while IFS= read -r tar_filelist_path; do
   Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R retrieve "${tar_filelist_path}"
   echo "Retrieved contents of: $tar_filelist_path"
 done < "$retrieve_list"
