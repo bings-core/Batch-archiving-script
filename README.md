@@ -157,11 +157,6 @@ retrieve_list="/sc/arion/projects/BiNGS/$USER/archiving/to_be_retrieved.txt"
 > "$retrieve_list"
 ```
 
-#### Set permission for archiving_bings user
-```bash
-setfacl -R -m user:archiving_bings:rwx $output_log
-```
-
 Add paths of folders to be retrieved. All of them either need to be archived before 8/1/2025 or all of them are archived after 8/1/2025. 
 
 My to_be_retrieved.txt looks like this:
