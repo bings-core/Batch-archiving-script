@@ -150,14 +150,17 @@ Don’t forget to log the newly archived directories in the [BiNGS_Archiving_Log
 
  
 ### Retrieving archived dirs
-
-# Make a file containing the list of folders to be archived
+#### Make a file containing the list of folders to be archived
+#### Create or empty the list of folders to be archived
+```bash
 retrieve_list="/sc/arion/projects/BiNGS/$USER/archiving/to_be_retrieved.txt"
-# Create or empty the list of folders to be archived
-> "$folder_list"
+> "$retrieve_list"
+```
 
-# Set permission for archiving_bings user
+#### Set permission for archiving_bings user
+```bash
 setfacl -R -m user:archiving_bings:rwx $output_log
+```
 
 Add paths of folders to be retrieved. All of them either need to be archived before 8/1/2025 or all of them are archived after 8/1/2025. 
 
@@ -168,7 +171,7 @@ My to_be_retrieved.txt looks like this:
 /sc/arion/projects/BiNGS/bings_omics/data/bings/2023/ernestoguccione/EG19_slim/EG19_slim_20240913_20h51m07s.tar.gz.filelist
 /sc/arion/projects/BiNGS/bings_omics/data/bings/2023/ernestoguccione/Exp5_slim/Exp5_slim_20240913_23h28m40s.tar.gz.filelist
 
-### Switch to archiving_bings user
+#### Switch to archiving_bings user
 ```bash
 /opt/collab/bin/cologin archiving_bings
 
@@ -178,7 +181,7 @@ ml R/4.1.0
 retrieve_list="/sc/arion/projects/BiNGS/ulukag01/archiving/to_be_retrieved.txt"
 ```
 
-### Retrieve if all of them are archived before 8/1/2025
+#### Retrieve if all of them are archived before 8/1/2025
 ```bash
 # Loop through each file in the list
 while IFS= read -r retrieve_filelist_path; do
@@ -187,7 +190,7 @@ while IFS= read -r retrieve_filelist_path; do
 done < "$retrieve_list"
 ```
 
-### Retrieve if all of them are archived after 8/1/2025
+#### Retrieve if all of them are archived after 8/1/2025
 ```bash
 # Loop through each file in the list
 while IFS= read -r retrieve_filelist_path; do
