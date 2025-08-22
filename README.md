@@ -144,9 +144,54 @@ exit # log out of archiving_bings user
 exit # quit screen session
 ```
 
-### Final Reminder
+### Final reminder
 
 Don’t forget to log the newly archived directories in the [BiNGS_Archiving_Logs.xlsx](https://mtsinai-my.sharepoint.com/:x:/g/personal/deniz_demircioglu_mssm_edu/EQGNb5S7pbZLsOl2YNnztHQB_UZBapieLhwLwjtqfohhtw?e=6Tpa3f).
 
  
+### Retrieving archived dirs
 
+# Make a file containing the list of folders to be archived
+retrieve_list="/sc/arion/projects/BiNGS/$USER/archiving/to_be_retrieved.txt"
+# Create or empty the list of folders to be archived
+> "$folder_list"
+
+# Set permission for archiving_bings user
+setfacl -R -m user:archiving_bings:rwx $output_log
+
+Add paths of folders to be retrieved. All of them either need to be archived before 8/1/2025 or all of them are archived after 8/1/2025. 
+
+My to_be_retrieved.txt looks like this:
+
+/sc/arion/projects/BiNGS/bings_omics/data/bings/2023/ernestoguccione/EG12_slim/EG12_slim_20240913_15h58m12s.tar.gz.filelist
+/sc/arion/projects/BiNGS/bings_omics/data/bings/2023/ernestoguccione/EG18_slim/EG18_slim_20240913_18h53m36s.tar.gz.filelist
+/sc/arion/projects/BiNGS/bings_omics/data/bings/2023/ernestoguccione/EG19_slim/EG19_slim_20240913_20h51m07s.tar.gz.filelist
+/sc/arion/projects/BiNGS/bings_omics/data/bings/2023/ernestoguccione/Exp5_slim/Exp5_slim_20240913_23h28m40s.tar.gz.filelist
+
+### Switch to archiving_bings user
+```bash
+/opt/collab/bin/cologin archiving_bings
+
+ml R/4.1.0
+
+# ⚠️ Change ulukag01 in the paths below based on your minerva username. ⚠️
+retrieve_list="/sc/arion/projects/BiNGS/ulukag01/archiving/to_be_retrieved.txt"
+```
+
+### Retrieve if all of them are archived before 8/1/2025
+```bash
+# Loop through each file in the list
+while IFS= read -r retrieve_filelist_path; do
+  Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R retrieve "${tar_filelist_path}" --legacy
+  echo "Retrieved contents of: $tar_filelist_path"
+done < "$retrieve_list"
+```
+
+### Retrieve if all of them are archived after 8/1/2025
+```bash
+# Loop through each file in the list
+while IFS= read -r retrieve_filelist_path; do
+  Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R retrieve "${tar_filelist_path}"
+  echo "Retrieved contents of: $tar_filelist_path"
+done < "$retrieve_list"
+```
