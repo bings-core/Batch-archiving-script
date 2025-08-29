@@ -179,6 +179,11 @@ retrieve_list="/sc/arion/projects/BiNGS/ulukag01/archiving/to_be_retrieved.txt"
 ```bash
 # Loop through each file in the list
 while IFS= read -r tar_filelist_path; do
+  # Get the directory 
+  dir_path=$(dirname "$tar_filelist_path")
+  # Move into the directory
+  cd "$dir_path" || { echo "❌ Could not cd into $dir_path"; continue; }
+  # Retrieve the folder
   Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R retrieve "${tar_filelist_path}" --legacy
   echo "Retrieved contents of: $tar_filelist_path"
 done < "$retrieve_list"
@@ -188,7 +193,11 @@ done < "$retrieve_list"
 ```bash
 # Loop through each file in the list
 while IFS= read -r tar_filelist_path; do
+  # Get the directory 
+  dir_path=$(dirname "$tar_filelist_path")
+  # Move into the directory
+  cd "$dir_path" || { echo "❌ Could not cd into $dir_path"; continue; }
+  # Retrieve the folder
   Rscript /sc/arion/projects/BiNGS/bings_analysis/code/R/utilities/tsm_archiving_tar.R retrieve "${tar_filelist_path}"
-  echo "Retrieved contents of: $tar_filelist_path"
 done < "$retrieve_list"
 ```
